@@ -1,7 +1,5 @@
 # Vision — Cycling Form & Performance Analyzer
 
-[![CI](https://github.com/caldvs/cycling-form/actions/workflows/ci.yaml/badge.svg)](https://github.com/caldvs/cycling-form/actions/workflows/ci.yaml)
-
 Cycling form & performance analyzer pairing **MediaPipe BlazePose** on indoor-trainer video with **Garmin FIT** telemetry, with per-stroke Pearson correlations between joint angles and power/cadence/heart-rate.
 
 ![Dashboard — synced video with skeleton overlay, joint-angle chart, per-stroke correlations](docs/dashboard.png)
