@@ -1,9 +1,19 @@
 Vision — Cycling Form & Performance Analyzer
 Copyright (c) 2026 Callum
 
-This project vendors upstream open-source code. See the per-component sections
-below for credit and licenses.
+This project vendors upstream open-source code. Each vendored component
+is credited below with its upstream source, license, and the commit
+SHA at the time of vendoring.
 
 -----------------------------------------------------------------------------
-(vendored components will be listed here as they are added — see plan 00-03)
+Component: infra/kill-switch/
+Upstream:  https://github.com/Cyclenerd/poweroff-google-cloud-cap-billing
+Commit:    e5781791e08b86cb49debffce82bace453b1e809
+License:   Apache-2.0
+Notice:    Vendored 2026-05-20 per .planning/phases/00-bootstrap-cost-guardrails/00-CONTEXT.md (D-04).
+           Local modifications: banner comment added; project id sourced
+           from Pub/Sub message body (`projectId`) when present, falling
+           back to the Cloud Function's Application Default Credentials
+           project (upstream's original behaviour).
+           See infra/kill-switch/README.md for the full record.
 -----------------------------------------------------------------------------
