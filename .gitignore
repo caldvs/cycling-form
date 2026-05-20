@@ -1,12 +1,48 @@
-# Phase 0 / Plan 01 minimal .gitignore — covers ONLY artifacts produced by the
-# Python toolchain bootstrap (uv venv + tool caches). The full project-wide
-# .gitignore (credentials, .env, raw FIT files, parquet, mp4 fixtures, etc.)
-# is delivered by a separate Phase 0 plan per CONTEXT D-14 / BOOT-07.
-.venv/
+# Credentials, env, secrets
+# NOTE: blanket *.json — re-allow specific JSON via !path in later phases
+*.json
+.env
+.env.*
+# Re-allow committed example env templates
+!.env.example
+secrets/
+*.pem
+*.key
+
+# Raw telemetry files contain GPS — never commit (BOOT-07)
+*.fit
+*.FIT
+*.tcx
+*.gpx
+
+# Large media / derived artifacts — not for git
+*.mp4
+*.mov
+*.avi
+*.parquet
+
+# Python
 __pycache__/
 *.py[cod]
+*.egg-info/
+*.egg
+build/
+dist/
+.venv/
+venv/
+
+# Tool caches
+.uv-cache/
 .mypy_cache/
-.pytest_cache/
 .ruff_cache/
+.pytest_cache/
 .coverage
 htmlcov/
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
