@@ -52,10 +52,10 @@ Vertex AI Pipelines (a v2 stretch flourish) is **out of v1 scope** and is not re
   3. **The Pub/Sub → Cloud Function billing kill switch is deployed AND tested end-to-end** — a simulated budget-exceeded Pub/Sub message triggers the function and disables billing on a throwaway project (verifiable via Cloud Function logs and a billing-state check)
   4. `docs/filming-protocol.md` exists and specifies camera height = BB height, fiducial in frame, 60fps, CFR, framing, tripod-only
   5. The README skeleton contains a JD-bullet → code mapping table with placeholder rows for each phase to fill in
-**Plans:** 2/7 plans executed
+**Plans:** 3/7 plans executed
   - [x] 00-01-PLAN.md — Python 3.12 toolchain (pyproject.toml, uv.lock, lib/vision/, smoke test)
   - [x] 00-02-PLAN.md — Repo hygiene (.gitignore, CONTRIBUTING.md, NOTICE stub)
-  - [ ] 00-03-PLAN.md — Vendor Cyclenerd kill-switch source into infra/kill-switch/
+  - [x] 00-03-PLAN.md — Vendor Cyclenerd kill-switch source into infra/kill-switch/
   - [ ] 00-04-PLAN.md — Author scripts/bootstrap-gcp.{env.example,sh} + scripts/test-kill-switch.sh
   - [ ] 00-05-PLAN.md — Author docs/filming-protocol.md (one-pager + ASCII diagram)
   - [ ] 00-06-PLAN.md — README skeleton with JD-mapping table + .github/workflows/ci.yaml
@@ -204,7 +204,7 @@ A hiring manager reading the roadmap should see all four JD areas exercised acro
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 0. Bootstrap & Cost Guardrails | 2/7 | In Progress|  |
+| 0. Bootstrap & Cost Guardrails | 3/7 | In Progress|  |
 | 1. Local Thin Slice (No GCP) | 0/0 | Not started | - |
 | 2. Containerize Each Stage | 0/0 | Not started | - |
 | 3. GCP Storage + Manual Job Invocation | 0/0 | Not started | - |

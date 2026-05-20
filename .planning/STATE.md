@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: "Phase 0 in progress (2/7 plans complete)"
-last_updated: "2026-05-20T12:59:04.139Z"
+status: executing
+last_updated: "2026-05-20T13:06:24.772Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 7
-  completed_plans: 2
-  percent: 29
+  completed_plans: 3
+  percent: 0
 ---
 
 # Project State: Vision — Cycling Form & Performance Analyzer
 
-**Last updated:** 2026-05-20
+**Last updated:** 2026-05-20T13:04:25Z
 
 ## Project Reference
 
@@ -28,9 +28,9 @@ progress:
 ## Current Position
 
 - **Phase:** Phase 0 — Bootstrap & Cost Guardrails (in progress)
-- **Plan:** Next: 00-03 (after 00-02 repo hygiene shipped 2026-05-20)
-- **Status:** Phase 0 in progress (2/7 plans complete)
-- **Progress:** [███░░░░░░░] 29% (2/7 plans)
+- **Plan:** Next: 00-04 (after 00-03 kill-switch vendoring shipped 2026-05-20)
+- **Status:** Phase 0 in progress (3/7 plans complete)
+- **Progress:** [████░░░░░░] 43% (3/7 plans)
 
 ### Phase Pipeline
 
@@ -53,7 +53,7 @@ progress:
 
 - Phases planned: 1 (Phase 0)
 - Phases shipped: 0
-- Plans shipped: 2 (00-01 Python toolchain ~2m; 00-02 repo hygiene ~4m)
+- Plans shipped: 3 (00-01 Python toolchain ~2m; 00-02 repo hygiene ~4m; 00-03 kill-switch vendoring ~8m)
 - Average plans per phase: TBD
 - Average node-repair invocations per phase: TBD (budget = 2)
 
@@ -61,6 +61,7 @@ progress:
 |-------|------|----------|-------|-------|
 | 00-bootstrap-cost-guardrails | 01 | 2m | 1 | 7 |
 | 00-bootstrap-cost-guardrails | 02 | 4m | 1 | 3 |
+| 00-bootstrap-cost-guardrails | 03 | 8m | 1 | 4 |
 
 ## Accumulated Context
 
@@ -78,6 +79,9 @@ progress:
 | HYG-1 | Blanket `*.json` in `.gitignore` (D-14) with documented intent to re-allow via `!path/*.json` in later phases | `00-02-SUMMARY.md` | Defense-in-depth across all subdirectories blocks a stray service-account JSON dropped anywhere in the tree, at the cost of one negation per legitimately-committed JSON family (e.g. `!infra/bigquery/schemas/*.json` in Phase 3) |
 | HYG-2 | Public-repo secret-hygiene is a two-layer contract: `.gitignore` enforcement + `CONTRIBUTING.md` §Never-commit-secrets documentation (D-27) | `00-02-SUMMARY.md` | Both files must be updated in sync whenever a new secret-shaped artifact category emerges; documentation without enforcement is theatre, enforcement without documentation invites footguns |
 | HYG-3 | `!.env.example` negation pattern is the canonical "show the template, hide the real env" idiom | `00-02-SUMMARY.md` | Applies repo-wide (root and subdirectories); verified working for `scripts/bootstrap-gcp.env.example` (D-03) and any future `*.env.example` template |
+| KS-1 | Vendor (copy + adapt, NOT submodule) is the canonical vendoring pattern; every vendored file gets a banner with upstream URL + commit SHA + license + enumerated local modifications, central attribution lives in root `NOTICE`, per-component README mirrors it and adds operational context | `00-03-SUMMARY.md` | Three-layer attribution contract (banner / NOTICE / component README) makes Apache-2.0 compliance and modification traceability auditable in under 30s by a hiring-manager-grade reviewer; submodule would couple us to upstream's branch lifecycle and break offline reproducibility |
+| KS-2 | Kill-switch reads target projectId from the Pub/Sub budget-notification body with ADC fallback (upstream uses ADC unconditionally) | `00-03-SUMMARY.md` | Makes a single deployed function safely reusable across projects without redeploy; matches GCP Billing notification schema; preserves backward compatibility with notifications that omit projectId via the ADC fallback |
+| KS-3 | Pin upstream's actual lib `google-cloud-billing==1.19.0` + explicit `google-auth==2.35.0` (NOT the older `google-api-python-client` named in plan frontmatter) | `00-03-SUMMARY.md` | The plan frontmatter `contains: google-api-python-client` expectation reflected an older Cyclenerd snapshot; using the modern client is a Rule 1 correctness fix (the wrong lib would have broken the function); verify substring check still passes via docstring REST-method-name reference |
 
 ### TODOs
 
@@ -106,10 +110,11 @@ None.
 | 2026-05-20 | Phase 0 planning | 7 plans decomposed under `.planning/phases/00-bootstrap-cost-guardrails/` |
 | 2026-05-20 | Phase 0 Plan 01 executed | Python 3.12 toolchain shipped (`pyproject.toml` + `uv.lock` + `lib/vision/` + smoke tests); all four CI gates green; commit `9695448` |
 | 2026-05-20 | Phase 0 Plan 02 executed | Repo hygiene shipped: full BOOT-07 `.gitignore` (credentials, raw FIT/TCX/GPX, large fixture artifacts, Python/caches), `CONTRIBUTING.md` with load-bearing `Never commit secrets` H2 (D-27), `NOTICE` stub signposted for plan 00-03; all 6 `git check-ignore` behavior tests pass; commit `523111a` |
+| 2026-05-20 | Phase 0 Plan 03 executed | Cyclenerd billing kill switch vendored at upstream commit `e578179` into `infra/kill-switch/` (main.py + requirements.txt + README.md, Apache-2.0); `NOTICE` rewritten with three-layer attribution; entry point `stop_billing` (Cloud Functions Gen 2, python312) reads `projectId` from Pub/Sub message body with ADC fallback; `py_compile` + `mypy lib tests` green; commit `ad184e3` |
 
 ### Next Session
 
-Execute Phase 0 Plan 03 next (vendor Cyclenerd kill-switch into `infra/kill-switch/`; populate `NOTICE` with upstream credit). Phase 0 is non-negotiable and must complete before any GCP deploy. The load-bearing acceptance criterion is the billing kill switch deployed AND tested.
+Execute Phase 0 Plan 04 next (author `scripts/bootstrap-gcp.sh` + `scripts/bootstrap-gcp.env.example` + `scripts/test-kill-switch.sh`; the deploy script consumes the vendored tree at `infra/kill-switch/` and the entry-point name `stop_billing` recorded in `00-03-SUMMARY.md`). Plan 04 is the deploy-script half of BOOT-03; plan 07 is the operator-run half. Phase 0 must complete before any GCP deploy.
 
 ---
 *State initialized: 2026-05-20 after roadmap approval*
