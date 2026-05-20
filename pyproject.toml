@@ -11,6 +11,9 @@ authors = [{ name = "Callum" }]
 # pinned per .planning/research/STACK.md.
 dependencies = []
 
+[project.scripts]
+vision = "vision.cli:main"
+
 [project.optional-dependencies]
 pose = [
   "mediapipe>=0.10.35,<0.11",
@@ -40,6 +43,9 @@ viewer = [
 ]
 cli = [
   "typer>=0.12,<0.13",
+  # click 8.2 broke TyperArgument.make_metavar signature against typer 0.12.x;
+  # pin until typer's upper bound moves (STACK.md pins typer 0.12.x).
+  "click>=8.1,<8.2",
   "pydantic>=2,<3",
 ]
 # `uv sync --extra all` installs the full runtime stack in one shot.
@@ -76,6 +82,12 @@ extend-exclude = ["uv.lock"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# Test files do `pytest.importorskip(...)` *before* module-level imports so
+# they cleanly skip when optional extras (mediapipe, garmin-fit-sdk) are
+# absent. That conflicts with E402; ignore it just under tests/.
+"tests/*" = ["E402"]
 
 [tool.ruff.format]
 # Defaults: double quotes, trailing-comma magic.

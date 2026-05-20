@@ -1,9 +1,12 @@
 # Vision — Cycling Form & Performance Analyzer
 
-<!-- TODO Phase 6 (PORT-01): replace <OWNER>/<REPO> placeholders once the public repo URL is live. -->
-[![CI](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yaml/badge.svg)](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yaml)
+[![CI](https://github.com/caldvs/cycling-form/actions/workflows/ci.yaml/badge.svg)](https://github.com/caldvs/cycling-form/actions/workflows/ci.yaml)
 
 Given an indoor-trainer cycling video and its FIT file, this project produces explainable per-stroke pose-vs-telemetry correlations — for example, *"knee-over-pedal-spindle drift correlates with power drop after minute 20."* It fuses MediaPipe pose landmarks with Garmin FIT power/cadence/speed and Open-Meteo weather, then surfaces stroke-level metrics in a Streamlit viewer on Cloud Run. It is a portfolio piece engineered to demonstrate four JD areas in one self-contained repo: **computer vision / pose estimation**, **GCP-based ML workloads**, **sport/performance telemetry**, and **CS/Engineering practices**. Built for one user (the project owner); not multi-tenant, not real-time, not a coaching prescription engine.
+
+![Dashboard — synced video with skeleton overlay, joint-angle chart, per-stroke correlations](docs/dashboard.png)
+
+> Local Streamlit dashboard: MediaPipe pose skeleton + joint-angle labels overlaid on the source video, a synced chart of the chosen joint angle (left, blue) and FIT power (right, orange), per-stroke band shading, and a red playhead that tracks `currentTime`. Tabs underneath surface the per-stroke table, correlations, and pose-quality diagnostics.
 
 ## JD-bullet → code mapping
 
@@ -49,6 +52,26 @@ uv run ruff check . && uv run mypy lib tests && uv run pytest -q
 ```
 
 See CONTRIBUTING.md for the full local-development policy and the 'never commit secrets' rules.
+
+### Pose extraction
+
+Install the runtime extras and run the CLI against any indoor-trainer video. The MediaPipe Pose Landmarker model (~9 MB) auto-downloads to `./models/` on first run.
+
+```bash
+uv sync --extra pose --extra data --extra cli
+uv run vision pose-extract path/to/ride.mp4 --out keypoints.parquet --overlay overlay.mp4 --ride-id myride
+```
+
+### Web UI (Streamlit)
+
+A single-page upload-and-process viewer is also available. Same pose pipeline, browser front end.
+
+```bash
+uv sync --extra pose --extra data --extra cli --extra viewer
+uv run streamlit run viewer/app.py
+```
+
+Open the printed `http://localhost:8501` URL, drop in an `.mp4`, click **Process video**. Outputs: a keypoints Parquet (downloadable), a `left_knee` y-coordinate timeline, and optionally a skeleton-overlay MP4.
 
 ## GCP setup (Phase 0)
 

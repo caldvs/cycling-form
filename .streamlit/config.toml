@@ -1,0 +1,17 @@
+# Unified light theme — Streamlit chrome + embedded Plotly dashboard stay
+# visually consistent.
+
+[theme]
+base = "light"
+primaryColor = "#2b7fd0"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f4f6f8"
+textColor = "#1a1d21"
+font = "sans serif"
+
+[server]
+headless = true
+runOnSave = true
+
+[browser]
+gatherUsageStats = false
