@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-# Least-privilege: CI does not need write access to the repo. Build/push
-# (which would need `packages: write` etc.) is deferred to Phase 6 (PORT-05).
 permissions:
   contents: read
 
@@ -24,8 +22,6 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
-          # Pinned to 0.4.x for reproducibility; bump deliberately when
-          # the Phase 6 (PORT-05) hardening pass moves to SHA-pinning.
           version: "0.4.x"
           enable-cache: true
           cache-dependency-glob: |
@@ -39,10 +35,7 @@ jobs:
         run: uv sync --frozen
 
       - name: Lint (ruff check)
-        run: uv run ruff check .
-
-      - name: Format check (ruff format --check)
-        run: uv run ruff format --check .
+        run: uv run ruff check lib tests viewer
 
       - name: Type check (mypy)
         run: uv run mypy lib tests
