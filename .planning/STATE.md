@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: "Awaiting `/gsd:plan-phase 0`"
-last_updated: "2026-05-19T23:43:35.445Z"
+status: "Phase 0 in progress (1/7 plans complete)"
+last_updated: "2026-05-20T12:52:49.420Z"
 progress:
   total_phases: 7
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 7
+  completed_plans: 1
   percent: 0
 ---
 
@@ -23,14 +23,14 @@ progress:
 - **Granularity:** coarse
 - **Phases:** 7 (Phase 0 — Phase 6)
 - **JD signals (4):** CS/Engineering, computer vision / pose estimation, GCP-based ML workloads, sport/performance telemetry
-- **Current focus:** Pre-Phase-0 — roadmap is approved; awaiting plan creation for Phase 0
+- **Current focus:** Phase 0 — Bootstrap & Cost Guardrails (in progress)
 
 ## Current Position
 
-- **Phase:** Phase 0 — Bootstrap & Cost Guardrails (not started)
-- **Plan:** None
-- **Status:** Awaiting `/gsd:plan-phase 0`
-- **Progress:** `[                    ]` 0 / 7 phases complete
+- **Phase:** Phase 0 — Bootstrap & Cost Guardrails (in progress)
+- **Plan:** Next: 00-02 (after 00-01 Python toolchain shipped 2026-05-20)
+- **Status:** Phase 0 in progress (1/7 plans complete)
+- **Progress:** [█░░░░░░░░░] 14% (1/7 plans)
 
 ### Phase Pipeline
 
@@ -51,10 +51,15 @@ progress:
 
 ## Performance Metrics
 
-- Phases planned: 0
+- Phases planned: 1 (Phase 0)
 - Phases shipped: 0
+- Plans shipped: 1 (00-01 Python toolchain, ~2m)
 - Average plans per phase: TBD
 - Average node-repair invocations per phase: TBD (budget = 2)
+
+| Phase | Plan | Duration | Tasks | Files |
+|-------|------|----------|-------|-------|
+| 00-bootstrap-cost-guardrails | 01 | 2m | 1 | 7 |
 
 ## Accumulated Context
 
@@ -66,6 +71,9 @@ progress:
 | ADR-2 | Time alignment as a BigQuery SQL view, not in compute jobs | `research/ARCHITECTURE.md` | Per-ride scalar offset stored in `rides` metadata; `fused_timeline` view applies offset on JOIN; alignment failures are instantly debuggable; reprocessing pose/FIT doesn't require re-running alignment |
 | ADR-3 | Pose inference always runs in cloud (not local-only) for the shipped pipeline | `research/ARCHITECTURE.md` | JD bullet is "GCP-based ML workloads"; pose running only on a laptop doesn't satisfy it; same container runs both places |
 | GRAN | Coarse granularity (6-7 phases) | `config.json` | MVP mode; favor end-to-end thin slice over deep specialization (per PROJECT.md timeline constraint of 4-8 weekends) |
+| TC-1 | Hatchling build backend + PEP 735 `[dependency-groups]` for dev tools | `00-01-SUMMARY.md` | First-class uv support; keeps dev tools out of the user-facing optional-group namespace; pyproject.toml shape is now the template every later phase preserves |
+| TC-2 | Optional-dependency groups (pose/telemetry/data/gcp/weather/viewer/cli + meta `all`) instead of a flat dependency list | `00-01-SUMMARY.md` | Phase 0 CI stays fast (no MediaPipe wheel install); Phase 2 containers install only the groups each stage needs |
+| TC-3 | `requires-python = ">=3.12,<3.13"` (with upper bound) | `00-01-SUMMARY.md` | MediaPipe has no 3.13 wheels per STACK.md; upper bound is load-bearing and must be preserved across all later phases until MediaPipe ships 3.13 wheels |
 
 ### TODOs
 
@@ -91,12 +99,12 @@ None.
 |------|----------|---------|
 | 2026-05-20 | Project initialization | PROJECT.md + REQUIREMENTS.md + research dossier (STACK / ARCHITECTURE / PITFALLS / SUMMARY) created |
 | 2026-05-20 | Roadmap creation | ROADMAP.md + STATE.md written; 53/53 v1 requirements mapped to 7 phases (Phase 0 — Phase 6) |
+| 2026-05-20 | Phase 0 planning | 7 plans decomposed under `.planning/phases/00-bootstrap-cost-guardrails/` |
+| 2026-05-20 | Phase 0 Plan 01 executed | Python 3.12 toolchain shipped (`pyproject.toml` + `uv.lock` + `lib/vision/` + smoke tests); all four CI gates green; commit `9695448` |
 
 ### Next Session
 
-Run `/gsd:plan-phase 0` to decompose Phase 0 (Bootstrap & Cost Guardrails) into executable plans.
-
-Phase 0 is non-negotiable and must complete before any GCP deploy. The load-bearing acceptance criterion is the billing kill switch deployed AND tested.
+Execute Phase 0 Plan 02 next. Phase 0 is non-negotiable and must complete before any GCP deploy. The load-bearing acceptance criterion is the billing kill switch deployed AND tested.
 
 ---
 *State initialized: 2026-05-20 after roadmap approval*

@@ -9,7 +9,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Bootstrap
 
-- [ ] **BOOT-01**: Repo is initialized with Python 3.12 toolchain (`pyproject.toml`, `uv.lock`, `ruff`, `mypy`, `pytest`)
+- [x] **BOOT-01**: Repo is initialized with Python 3.12 toolchain (`pyproject.toml`, `uv.lock`, `ruff`, `mypy`, `pytest`)
 - [ ] **BOOT-02**: GCP project is created with a billing budget capped at $20/month and alerts at 50/90/100%
 - [ ] **BOOT-03**: A Pub/Sub → Cloud Function billing kill switch is deployed and tested (disables billing if budget is exceeded)
 - [ ] **BOOT-04**: All GCP resources are pinned to a single region with the choice documented
@@ -153,7 +153,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BOOT-01 | Phase 0 | Pending |
+| BOOT-01 | Phase 0 | Complete |
 | BOOT-02 | Phase 0 | Pending |
 | BOOT-03 | Phase 0 | Pending |
 | BOOT-04 | Phase 0 | Pending |
