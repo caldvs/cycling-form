@@ -15,7 +15,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **BOOT-04**: All GCP resources are pinned to a single region with the choice documented
 - [ ] **BOOT-05**: A filming protocol is documented (`docs/filming-protocol.md`) covering camera height, fiducial, 60fps, CFR, framing
 - [ ] **BOOT-06**: A README skeleton exists with a JD-bullet → code mapping table that downstream phases fill in
-- [ ] **BOOT-07**: `.gitignore` excludes credentials, env files, and FIT files containing GPS
+- [x] **BOOT-07**: `.gitignore` excludes credentials, env files, and FIT files containing GPS
 
 ### Ingestion
 
@@ -159,7 +159,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BOOT-04 | Phase 0 | Pending |
 | BOOT-05 | Phase 0 | Pending |
 | BOOT-06 | Phase 0 | Pending |
-| BOOT-07 | Phase 0 | Pending |
+| BOOT-07 | Phase 0 | Complete |
 | ING-01 | Phase 1 | Pending |
 | ING-02 | Phase 1 | Pending |
 | ING-03 | Phase 1 | Pending |
