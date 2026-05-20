@@ -3,18 +3,18 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-20T13:12:46.617Z"
+last_updated: "2026-05-20T13:22:04.345Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 7
-  completed_plans: 4
-  percent: 0
+  completed_plans: 6
+  percent: 86
 ---
 
 # Project State: Vision — Cycling Form & Performance Analyzer
 
-**Last updated:** 2026-05-20T14:14:00Z
+**Last updated:** 2026-05-20T13:25:00Z
 
 ## Project Reference
 
@@ -28,9 +28,9 @@ progress:
 ## Current Position
 
 - **Phase:** Phase 0 — Bootstrap & Cost Guardrails (in progress)
-- **Plan:** Next: 00-04 (00-05 filming protocol shipped out-of-order on 2026-05-20; 00-04 bootstrap-gcp.sh still pending)
-- **Status:** Phase 0 in progress (4/7 plans complete)
-- **Progress:** [██████░░░░] 57%
+- **Plan:** Next: 00-07 (operator-run kill-switch test against live GCP — last remaining Phase 0 plan; closes BOOT-02..04 + ROADMAP Phase 0 success criterion #3)
+- **Status:** Phase 0 in progress (6/7 plans complete; 00-04 GCP bootstrap-script half just shipped, 00-06 README skeleton + CI shipped just before)
+- **Progress:** [█████████░] 86%
 
 ### Phase Pipeline
 
@@ -53,7 +53,7 @@ progress:
 
 - Phases planned: 1 (Phase 0)
 - Phases shipped: 0
-- Plans shipped: 4 (00-01 Python toolchain ~2m; 00-02 repo hygiene ~4m; 00-03 kill-switch vendoring ~8m; 00-05 filming protocol ~6m)
+- Plans shipped: 6 (00-01 Python toolchain ~2m; 00-02 repo hygiene ~4m; 00-03 kill-switch vendoring ~8m; 00-05 filming protocol ~6m; 00-06 README + CI; 00-04 bootstrap-gcp.sh ~3m)
 - Average plans per phase: TBD
 - Average node-repair invocations per phase: TBD (budget = 2)
 
@@ -63,6 +63,8 @@ progress:
 | 00-bootstrap-cost-guardrails | 02 | 4m | 1 | 3 |
 | 00-bootstrap-cost-guardrails | 03 | 8m | 1 | 4 |
 | 00-bootstrap-cost-guardrails | 05 | 6m | 1 | 1 |
+| 00-bootstrap-cost-guardrails | 06 | n/a (shipped between sessions) | 2 | (see 00-06-SUMMARY.md) |
+| 00-bootstrap-cost-guardrails | 04 | 3m | 3 | 3 |
 
 ## Accumulated Context
 
@@ -86,6 +88,9 @@ progress:
 | FILM-1 | Filming-protocol hard-lock format: numbered list with bold lock name + one-sentence "why" in italics citing the relevant pitfall (Pitfall #1 or #8); every downstream operator-facing protocol doc mirrors this shape | `00-05-SUMMARY.md` | Per-lock pitfall citation makes the lock self-justifying for a hiring-manager reader and lets a skeptical reviewer trace any geometric assumption from doc → pitfall → code in <30s |
 | FILM-2 | Canonical post-record CFR-detection command (`ffprobe -v error -show_streams -select_streams v:0 <file>.mp4 \| grep -E 'r_frame_rate\|avg_frame_rate\|nb_frames\|duration'` with `r_frame_rate == avg_frame_rate` required) lives in `docs/filming-protocol.md` Section 6 and is the substring Phase 1 ING-03 must reuse verbatim as the VFR-rejection gate | `00-05-SUMMARY.md` | Single-source-of-truth for the doc-and-code VFR contract; divergence is then mechanically detectable (Pitfall #8 + threat T-00-14 mitigation per plan 00-05 threat model) |
 | FILM-3 | ASCII fenced-code-block diagram (no language tag) over PNG for v1 filming protocol; PNG upgrade deferred to Phase 6 polish | `00-05-SUMMARY.md` | Diff-able, greppable, renderable in any markdown viewer, zero binary churn; Phase 6 visual polish can upgrade if hiring-manager feedback ever requests |
+| INFRA-1 | Cross-phase contract: every GCP resource creation script sources `scripts/bootstrap-gcp.env` (or honors its pinned defaults) and never introduces a competing `GCP_REGION` variable. First applied in `bootstrap-gcp.sh`; binding on all Phase 3+ resource-creation work. | `00-04-SUMMARY.md` | Pitfall #13 region-mismatch defense encoded as a cross-phase convention; the single env file is the only place region can ever be authored. |
+| INFRA-2 | Idempotent describe-then-create gcloud pattern is the canonical bootstrap shape: every resource-creating gcloud call is preceded by a describe-or-list existence check (`if gcloud X describe RES >/dev/null 2>&1; then echo skip; else gcloud X create RES; fi`). Used 3× in `bootstrap-gcp.sh` (project, topic, service account) plus 2 list-by-name checks (email channel, budget). | `00-04-SUMMARY.md` | Re-runs are safe (D-02); operators get end-to-end reproducibility without per-resource cleanup. Future Phase 3+ bootstrap scripts must follow the same shape. |
+| INFRA-3 | Destructive scripts use a literal-phrase confirmation gate (operator types `DISABLE BILLING ON <project-id>` verbatim), not Y/N. | `00-04-SUMMARY.md` | T-00-11 mitigation: a muscle-memory `y` keypress on the wrong terminal cannot disable billing on a live project. Pattern applies to any future destructive script (Phase 7 cleanup, etc.). |
 
 ### TODOs
 
@@ -116,10 +121,12 @@ None.
 | 2026-05-20 | Phase 0 Plan 02 executed | Repo hygiene shipped: full BOOT-07 `.gitignore` (credentials, raw FIT/TCX/GPX, large fixture artifacts, Python/caches), `CONTRIBUTING.md` with load-bearing `Never commit secrets` H2 (D-27), `NOTICE` stub signposted for plan 00-03; all 6 `git check-ignore` behavior tests pass; commit `523111a` |
 | 2026-05-20 | Phase 0 Plan 03 executed | Cyclenerd billing kill switch vendored at upstream commit `e578179` into `infra/kill-switch/` (main.py + requirements.txt + README.md, Apache-2.0); `NOTICE` rewritten with three-layer attribution; entry point `stop_billing` (Cloud Functions Gen 2, python312) reads `projectId` from Pub/Sub message body with ADC fallback; `py_compile` + `mypy lib tests` green; commit `ad184e3` |
 | 2026-05-20 | Phase 0 Plan 05 executed | `docs/filming-protocol.md` shipped (89 lines): four hard locks (BB height ±2 cm, fiducial, 60 fps CFR, tripod-only) each citing Pitfall #1 / #8; 25-line ASCII side-view fenced block; six-item phone-preview checklist (tripod / fiducial / side-on / TDC↔BDC / 60 fps CFR / lighting); iPhone + Android Auto-FPS-disable instructions; 5000 K LED lighting paragraph; ffprobe r_frame_rate==avg_frame_rate post-record gate; BOOT-05 complete; commit `bc6fd65` |
+| 2026-05-20 | Phase 0 Plan 06 executed | README skeleton with JD-mapping table + GitHub Actions CI workflow (ruff + mypy + pytest); commits `2a81a0a` + `d03cd4b` + `6df0b13`; see `00-06-SUMMARY.md` for details. |
+| 2026-05-20 | Phase 0 Plan 04 executed | `scripts/bootstrap-gcp.env.example` (env template), `scripts/bootstrap-gcp.sh` (idempotent gcloud bootstrap: project, APIs, Pub/Sub, SA + IAM, Cloud Functions Gen 2 deploy from `infra/kill-switch/`, email channel + budget with 50/90/100% thresholds, single-region pin), and `scripts/test-kill-switch.sh` (synthetic budget-exceeded publish + log poll + billing-state poll + literal-phrase confirmation gate). `bash -n` clean on both scripts; BOOT-02..04 addressed at the source-of-truth level (closure deferred to plan 00-07's operator run). Commits: `168da7f` (env template), `03166b2` (bootstrap), `ac9c187` (test). |
 
 ### Next Session
 
-Execute Phase 0 Plan 04 next (author `scripts/bootstrap-gcp.sh` + `scripts/bootstrap-gcp.env.example` + `scripts/test-kill-switch.sh`; the deploy script consumes the vendored tree at `infra/kill-switch/` and the entry-point name `stop_billing` recorded in `00-03-SUMMARY.md`). Plan 04 is the deploy-script half of BOOT-03; plan 07 is the operator-run half. Plan 05 (filming protocol) already shipped out-of-order; remaining Phase 0 plans: 00-04 bootstrap-gcp.sh, 00-06 README skeleton, 00-07 operator-run kill-switch test. Phase 0 must complete before any GCP deploy.
+Execute Phase 0 Plan 07 (operator-run kill-switch test against live GCP) to close BOOT-02..04 and ROADMAP Phase 0 success criterion #3. Operator must: install gcloud ≥ 470.0.0 + `gcloud auth login` + `gcloud auth application-default login`; have a GCP Billing Account id ready; choose a project id (global+immutable); decide region (default `us-central1` per D-07, or `europe-west1` per D-10 BEFORE first run); `cp scripts/bootstrap-gcp.env.example scripts/bootstrap-gcp.env` and fill the three blanks; run `./scripts/bootstrap-gcp.sh` on a throwaway project; run `./scripts/test-kill-switch.sh` on that throwaway and observe `KILL-SWITCH TEST: PASS`; then re-link billing on the throwaway. Phase 0 completes once 00-07 closes.
 
 ---
 *State initialized: 2026-05-20 after roadmap approval*
