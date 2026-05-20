@@ -13,7 +13,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **BOOT-02**: GCP project is created with a billing budget capped at $20/month and alerts at 50/90/100%
 - [x] **BOOT-03**: A Pub/Sub → Cloud Function billing kill switch is deployed and tested (disables billing if budget is exceeded)
 - [ ] **BOOT-04**: All GCP resources are pinned to a single region with the choice documented
-- [ ] **BOOT-05**: A filming protocol is documented (`docs/filming-protocol.md`) covering camera height, fiducial, 60fps, CFR, framing
+- [x] **BOOT-05**: A filming protocol is documented (`docs/filming-protocol.md`) covering camera height, fiducial, 60fps, CFR, framing
 - [ ] **BOOT-06**: A README skeleton exists with a JD-bullet → code mapping table that downstream phases fill in
 - [x] **BOOT-07**: `.gitignore` excludes credentials, env files, and FIT files containing GPS
 
@@ -157,7 +157,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BOOT-02 | Phase 0 | Pending |
 | BOOT-03 | Phase 0 | Complete |
 | BOOT-04 | Phase 0 | Pending |
-| BOOT-05 | Phase 0 | Pending |
+| BOOT-05 | Phase 0 | Complete |
 | BOOT-06 | Phase 0 | Pending |
 | BOOT-07 | Phase 0 | Complete |
 | ING-01 | Phase 1 | Pending |

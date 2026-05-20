@@ -57,7 +57,7 @@ Vertex AI Pipelines (a v2 stretch flourish) is **out of v1 scope** and is not re
   - [x] 00-02-PLAN.md — Repo hygiene (.gitignore, CONTRIBUTING.md, NOTICE stub)
   - [x] 00-03-PLAN.md — Vendor Cyclenerd kill-switch source into infra/kill-switch/
   - [ ] 00-04-PLAN.md — Author scripts/bootstrap-gcp.{env.example,sh} + scripts/test-kill-switch.sh
-  - [ ] 00-05-PLAN.md — Author docs/filming-protocol.md (one-pager + ASCII diagram)
+  - [x] 00-05-PLAN.md — Author docs/filming-protocol.md (one-pager + ASCII diagram)
   - [ ] 00-06-PLAN.md — README skeleton with JD-mapping table + .github/workflows/ci.yaml
   - [ ] 00-07-PLAN.md — [operator-run] Bootstrap live GCP project + test kill switch end-to-end
 
